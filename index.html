@@ -1,0 +1,1838 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sifora Studio | Single File Website</title>
+  <meta name="description" content="Sifora Studio — Creative Design + Digital Growth Solutions. Single-file standalone website version." />
+  <style>
+    :root {
+      --bg: #111111;
+      --bg-soft: #171717;
+      --surface: #1f1f1f;
+      --surface-2: #262626;
+      --line: rgba(201, 168, 76, 0.18);
+      --line-strong: rgba(201, 168, 76, 0.4);
+      --text: #f5edd8;
+      --muted: rgba(245, 237, 216, 0.62);
+      --soft: rgba(245, 237, 216, 0.32);
+      --gold: #c9a84c;
+      --gold-2: #e4c97e;
+      --gold-3: #9d7930;
+      --green: #25d366;
+      --shadow: 0 20px 60px rgba(0, 0, 0, 0.45);
+      --radius: 22px;
+      --radius-sm: 16px;
+      --max: 1180px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(201,168,76,0.12), transparent 28%),
+        radial-gradient(circle at bottom left, rgba(201,168,76,0.09), transparent 30%),
+        linear-gradient(180deg, #0f0f0f 0%, #141414 35%, #101010 100%);
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+    button, input, select, textarea { font: inherit; }
+
+    .container {
+      width: min(calc(100% - 32px), var(--max));
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 96px 0;
+      position: relative;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 16px;
+      border: 1px solid var(--line-strong);
+      color: var(--gold);
+      border-radius: 999px;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      background: rgba(201, 168, 76, 0.06);
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      box-shadow: 0 0 18px rgba(201,168,76,0.5);
+    }
+
+    .title {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(34px, 5vw, 62px);
+      line-height: 1.02;
+      margin: 18px 0 14px;
+      letter-spacing: -0.03em;
+    }
+
+    .title .gold {
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .lead {
+      color: var(--muted);
+      font-size: clamp(16px, 1.8vw, 19px);
+      line-height: 1.8;
+      max-width: 650px;
+    }
+
+    .grid { display: grid; gap: 24px; }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(201,168,76,0.75), transparent);
+      opacity: 0;
+      transition: 0.35s ease;
+    }
+
+    .card:hover::after { opacity: 1; }
+    .soft {
+      color: var(--soft);
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      background: rgba(15, 15, 15, 0.78);
+      border-bottom: 1px solid rgba(201,168,76,0.08);
+    }
+
+    .nav-inner {
+      min-height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+    }
+
+    .brand-mark {
+      width: 46px;
+      height: 46px;
+      flex: 0 0 auto;
+      filter: drop-shadow(0 6px 18px rgba(201,168,76,0.18));
+    }
+
+    .brand-text strong {
+      color: var(--text);
+      font-size: 14px;
+      display: block;
+    }
+
+    .brand-text span {
+      color: var(--gold);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      color: var(--muted);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      transition: 0.25s ease;
+    }
+
+    .nav-links a:hover { color: var(--gold); }
+
+    .btn,
+    .btn-ghost,
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 999px;
+      transition: 0.28s ease;
+      cursor: pointer;
+    }
+
+    .btn {
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      color: #121212;
+      padding: 14px 22px;
+      border: 0;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+      box-shadow: 0 14px 34px rgba(201,168,76,0.22);
+    }
+
+    .btn:hover { transform: translateY(-2px); }
+
+    .btn-ghost {
+      padding: 14px 22px;
+      border: 1px solid rgba(245,237,216,0.14);
+      color: var(--text);
+      background: transparent;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 12px;
+    }
+
+    .btn-ghost:hover {
+      border-color: var(--line-strong);
+      color: var(--gold);
+    }
+
+    .menu-toggle {
+      display: none;
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      color: var(--gold);
+      place-items: center;
+    }
+
+    .mobile-menu {
+      display: none;
+      padding-bottom: 16px;
+    }
+
+    .mobile-menu.open { display: block; }
+    .mobile-panel {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(31,31,31,0.92);
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .mobile-panel a {
+      padding: 12px 14px;
+      border-radius: 12px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .hero {
+      min-height: calc(100vh - 76px);
+      display: grid;
+      align-items: center;
+      padding: 48px 0 28px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(rgba(201,168,76,0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(201,168,76,0.05) 1px, transparent 1px);
+      background-size: 88px 88px;
+      mask-image: radial-gradient(circle at center, black 38%, transparent 90%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 46px;
+      align-items: center;
+    }
+
+    .hero-tags,
+    .stat-grid,
+    .chips,
+    .filter-row,
+    .social-row,
+    .tool-row,
+    .contact-list,
+    .footer-links,
+    .footer-social,
+    .value-grid,
+    .testimonial-grid,
+    .service-grid,
+    .portfolio-grid,
+    .facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .chip {
+      padding: 10px 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin: 34px 0 26px;
+    }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 34px;
+    }
+
+    .stat {
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      text-align: center;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 30px;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .stat span {
+      color: var(--soft);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: grid;
+      place-items: center;
+      min-height: 560px;
+    }
+
+    .orb {
+      position: relative;
+      width: min(430px, 88vw);
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, rgba(245,237,216,0.08), rgba(255,255,255,0.01) 54%, transparent 55%),
+        radial-gradient(circle at center, rgba(201,168,76,0.15), transparent 70%);
+      display: grid;
+      place-items: center;
+      isolation: isolate;
+    }
+
+    .ring,
+    .ring-2,
+    .ring-3,
+    .tilt-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.2);
+      animation: spin 18s linear infinite;
+    }
+
+    .ring-2 {
+      inset: 26px;
+      animation-direction: reverse;
+      animation-duration: 14s;
+      opacity: 0.5;
+    }
+
+    .ring-3 {
+      inset: 56px;
+      animation-duration: 22s;
+      opacity: 0.35;
+    }
+
+    .tilt-ring {
+      inset: 34px;
+      border-width: 2px;
+      border-color: rgba(201,168,76,0.45);
+      transform: rotate(-17deg) scaleY(0.42);
+      animation: none;
+    }
+
+    .core {
+      width: 220px;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.22);
+      background:
+        radial-gradient(circle at 35% 35%, rgba(228,201,126,0.16), rgba(31,31,31,0.92) 64%),
+        linear-gradient(180deg, #2a2a2a, #161616);
+      box-shadow: inset 0 0 40px rgba(201,168,76,0.1), 0 20px 60px rgba(0,0,0,0.45);
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .core svg { width: 120px; height: 120px; }
+
+    .orbit {
+      position: absolute;
+      width: 70px;
+      height: 70px;
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      background: rgba(25,25,25,0.88);
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      box-shadow: 0 14px 30px rgba(0,0,0,0.34);
+      text-align: center;
+      font-size: 28px;
+      animation: float 5s ease-in-out infinite;
+    }
+
+    .orbit small {
+      position: absolute;
+      top: calc(100% + 8px);
+      white-space: nowrap;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--soft);
+    }
+
+    .orbit.a { top: 16px; left: 50%; transform: translateX(-50%); }
+    .orbit.b { right: 6px; top: 32%; animation-delay: .6s; }
+    .orbit.c { right: 78px; bottom: 54px; animation-delay: 1.2s; }
+    .orbit.d { left: 76px; bottom: 58px; animation-delay: 1.8s; }
+    .orbit.e { left: 8px; top: 33%; animation-delay: 2.4s; }
+    .orbit.f { left: 50%; bottom: 8px; transform: translateX(-50%); animation-delay: 3s; }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      margin-top: 42px;
+    }
+
+    .service-card {
+      padding: 28px;
+      min-height: 280px;
+    }
+
+    .icon-box {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      font-size: 28px;
+      margin-bottom: 18px;
+      border: 1px solid var(--line-strong);
+      background: linear-gradient(180deg, rgba(201,168,76,0.12), rgba(201,168,76,0.04));
+    }
+
+    .service-card h3,
+    .portfolio-copy h3,
+    .value h3,
+    .contact-panel h3,
+    .footer-brand h3 {
+      margin: 0 0 10px;
+      font-size: 22px;
+    }
+
+    .service-card p,
+    .portfolio-copy p,
+    .about-copy p,
+    .value p,
+    .testimonial p,
+    .contact-meta p,
+    .footer-brand p,
+    .foot-note {
+      color: var(--muted);
+      line-height: 1.8;
+    }
+
+    .mini-list {
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+      display: grid;
+      gap: 10px;
+    }
+
+    .mini-list li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--soft);
+      font-size: 14px;
+    }
+
+    .mini-list li::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      flex: 0 0 auto;
+    }
+
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      margin-top: 36px;
+    }
+
+    .filter-row {
+      justify-content: center;
+      margin-top: 26px;
+    }
+
+    .filter-btn {
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      color: var(--muted);
+      padding: 12px 16px;
+      border-radius: 999px;
+      cursor: pointer;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-size: 11px;
+      font-weight: 700;
+      transition: 0.25s ease;
+    }
+
+    .filter-btn.active,
+    .filter-btn:hover {
+      color: #121212;
+      border-color: transparent;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+    }
+
+    .project-card.hidden { display: none; }
+
+    .project-preview {
+      aspect-ratio: 4 / 3;
+      border-radius: 18px;
+      margin: 18px;
+      position: relative;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: linear-gradient(135deg, #101010, #222);
+    }
+
+    .project-preview .phone {
+      position: absolute;
+      width: 26%;
+      height: 52%;
+      top: 8%;
+      left: 50%;
+      transform: translateX(-50%) rotate(16deg);
+      border-radius: 22px;
+      background: linear-gradient(180deg, #f8f8f8, #d7d7d7);
+      box-shadow: 0 16px 36px rgba(0,0,0,0.35);
+      border: 5px solid #1a1a1a;
+      overflow: hidden;
+    }
+
+    .project-preview .phone::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 26%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(255,255,255,0.72));
+    }
+
+    .project-preview .phone::after {
+      content: "";
+      position: absolute;
+      inset: 28% 10% 10% 10%;
+      border-radius: 14px;
+      background: linear-gradient(180deg, rgba(201,168,76,0.3), transparent 60%);
+    }
+
+    .poster-row {
+      position: absolute;
+      left: 7%;
+      right: 7%;
+      bottom: 8%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .poster {
+      aspect-ratio: 1 / 1.18;
+      background: rgba(255,255,255,0.94);
+      border-radius: 14px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .poster::before {
+      content: "facebook";
+      position: absolute;
+      top: 8px;
+      left: 10px;
+      font-size: 10px;
+      font-weight: 800;
+      color: rgba(20,99,255,0.82);
+      text-transform: lowercase;
+    }
+
+    .poster::after {
+      content: "";
+      position: absolute;
+      left: 10px;
+      right: 10px;
+      bottom: 12px;
+      height: 8px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 999px;
+    }
+
+    .art-medical {
+      background:
+        radial-gradient(circle at 72% 28%, rgba(255,96,112,0.75) 0 16%, transparent 18%),
+        linear-gradient(135deg, #bce7ff, #ffffff 55%),
+        linear-gradient(180deg, #61c5ff, #008dde);
+    }
+
+    .art-pharma {
+      background:
+        linear-gradient(135deg, #43e0d1, #b5fff7 48%, #ffffff 49%),
+        linear-gradient(180deg, #53dbff, #1eb7d8);
+    }
+
+    .art-surgi {
+      background:
+        linear-gradient(135deg, #0f4d68, #26a6b9 48%, #a4f4ff 100%);
+    }
+
+    .art-ui {
+      background:
+        linear-gradient(135deg, #1e1f26, #3b2f14 38%, #c9a84c 100%);
+    }
+
+    .art-brand {
+      background:
+        linear-gradient(135deg, #151515, #352907 45%, #e4c97e 100%);
+    }
+
+    .art-web {
+      background:
+        linear-gradient(135deg, #16311d, #327246 45%, #9af6b9 100%);
+    }
+
+    .inner-shapes,
+    .inner-shapes::before,
+    .inner-shapes::after {
+      content: "";
+      position: absolute;
+      border-radius: 18px;
+    }
+
+    .inner-shapes {
+      inset: 18% 14% 24% 14%;
+      background: rgba(255,255,255,0.28);
+      transform: rotate(-8deg);
+    }
+
+    .inner-shapes::before {
+      inset: 14% 12% auto 12%;
+      height: 26%;
+      background: rgba(255,255,255,0.8);
+    }
+
+    .inner-shapes::after {
+      left: 12%;
+      right: 12%;
+      bottom: 12%;
+      height: 18%;
+      background: rgba(255,255,255,0.5);
+    }
+
+    .portfolio-copy {
+      padding: 0 20px 22px;
+    }
+
+    .meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin: 6px 0 10px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--gold);
+    }
+
+    .chips {
+      margin-top: 14px;
+    }
+
+    .chips span {
+      padding: 8px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      color: var(--soft);
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(255,255,255,0.02);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .about-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+      margin-top: 38px;
+    }
+
+    .about-copy,
+    .about-side,
+    .contact-panel,
+    .footer-brand,
+    .footer-col {
+      padding: 28px;
+    }
+
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .fact {
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .fact small {
+      display: block;
+      color: var(--soft);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      margin-bottom: 8px;
+      font-size: 11px;
+    }
+
+    .fact strong {
+      color: var(--gold);
+      font-size: 22px;
+    }
+
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .value {
+      padding: 24px;
+    }
+
+    .value .vicon {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 26px;
+      margin-bottom: 16px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid var(--line);
+    }
+
+    .tool-row {
+      margin-top: 26px;
+    }
+
+    .tool-row span {
+      padding: 11px 14px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--muted);
+      background: rgba(255,255,255,0.02);
+      font-size: 13px;
+    }
+
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      margin-top: 36px;
+    }
+
+    .testimonial {
+      padding: 26px;
+    }
+
+    .stars {
+      display: flex;
+      gap: 4px;
+      color: var(--gold);
+      margin-bottom: 16px;
+      font-size: 16px;
+    }
+
+    .person {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-top: 18px;
+    }
+
+    .avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 24px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid var(--line);
+      flex: 0 0 auto;
+    }
+
+    .person strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .person span { color: var(--soft); font-size: 13px; }
+
+    .rating-band {
+      margin-top: 28px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .rating-band .item {
+      padding: 22px;
+      text-align: center;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .rating-band strong {
+      display: block;
+      font-size: 34px;
+      margin-bottom: 6px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 24px;
+      margin-top: 38px;
+      align-items: start;
+    }
+
+    .contact-panel {
+      min-height: 100%;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 22px;
+    }
+
+    .contact-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      padding: 16px;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+    }
+
+    .contact-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(201,168,76,0.1);
+      border: 1px solid var(--line);
+      display: grid;
+      place-items: center;
+      color: var(--gold);
+      flex: 0 0 auto;
+    }
+
+    .contact-meta small {
+      color: var(--soft);
+      display: block;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      font-size: 10px;
+    }
+
+    .social-row { margin-top: 18px; }
+
+    .social-row a,
+    .footer-social a,
+    .floating-link,
+    .wa-float {
+      width: 46px;
+      height: 46px;
+      display: inline-grid;
+      place-items: center;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.02);
+      color: var(--gold);
+      transition: 0.28s ease;
+    }
+
+    .social-row a:hover,
+    .footer-social a:hover,
+    .floating-link:hover {
+      transform: translateY(-2px);
+      border-color: var(--line-strong);
+      background: rgba(201,168,76,0.1);
+    }
+
+    .wa-block {
+      margin-top: 18px;
+      padding: 18px;
+      border-radius: 18px;
+      border: 1px solid rgba(37,211,102,0.28);
+      background: rgba(37,211,102,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .wa-block strong { color: #8ef3b3; display: block; margin-bottom: 4px; }
+    .wa-block span { color: rgba(255,255,255,0.55); font-size: 14px; }
+
+    .contact-form {
+      display: grid;
+      gap: 16px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .field label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--soft);
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      background: rgba(255,255,255,0.03);
+      color: var(--text);
+      border-radius: 14px;
+      padding: 14px 16px;
+      outline: none;
+      transition: 0.25s ease;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--line-strong);
+      box-shadow: 0 0 0 4px rgba(201,168,76,0.08);
+    }
+
+    .field textarea {
+      resize: vertical;
+      min-height: 140px;
+    }
+
+    .form-note {
+      color: var(--soft);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    .success {
+      display: none;
+      padding: 14px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--line-strong);
+      background: rgba(201,168,76,0.1);
+      color: var(--gold-2);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .success.show { display: block; }
+
+    .footer {
+      padding: 28px 0 36px;
+      border-top: 1px solid rgba(201,168,76,0.12);
+      background: rgba(0,0,0,0.2);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr 0.8fr;
+      gap: 22px;
+      margin-bottom: 22px;
+    }
+
+    .footer-links {
+      display: grid;
+      gap: 10px;
+    }
+
+    .footer-col h4 {
+      margin: 0 0 16px;
+      color: var(--text);
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+    }
+
+    .footer-links a,
+    .footer-links button {
+      color: var(--muted);
+      background: none;
+      border: 0;
+      padding: 0;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(201,168,76,0.1);
+      padding-top: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .badge-ai {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(201,168,76,0.08);
+      color: var(--gold);
+      border: 1px solid var(--line);
+      font-size: 12px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .floating-stack {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 60;
+      display: grid;
+      gap: 10px;
+    }
+
+    .floating-link {
+      background: rgba(17,17,17,0.95);
+    }
+
+    .wa-float {
+      background: var(--green);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 14px 30px rgba(37,211,102,0.3);
+    }
+
+    .floating-tip {
+      position: fixed;
+      right: 76px;
+      bottom: 22px;
+      z-index: 59;
+      display: grid;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .floating-tip span {
+      display: block;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(15,15,15,0.95);
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      opacity: 0;
+      transform: translateX(8px);
+      transition: 0.25s ease;
+    }
+
+    .floating-stack a:hover + span,
+    .floating-stack a:focus + span {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: 0.65s ease;
+    }
+
+    .reveal.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @media (max-width: 1080px) {
+      .hero-grid,
+      .about-layout,
+      .contact-grid,
+      .footer-grid,
+      .service-grid,
+      .portfolio-grid,
+      .testimonial-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-visual { min-height: 460px; }
+      .contact-grid,
+      .about-layout,
+      .footer-grid { grid-template-columns: 1fr; }
+      .rating-band { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 760px) {
+      .section { padding: 78px 0; }
+      .nav-links { display: none; }
+      .menu-toggle { display: grid; }
+      .mobile-menu { display: none; }
+      .mobile-menu.open { display: block; }
+      .service-grid,
+      .portfolio-grid,
+      .testimonial-grid,
+      .value-grid,
+      .facts,
+      .form-grid,
+      .rating-band,
+      .stat-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-visual { min-height: 400px; }
+      .core { width: 180px; }
+      .orbit { width: 60px; height: 60px; border-radius: 16px; font-size: 22px; }
+      .title { line-height: 1.06; }
+      .footer-bottom { align-items: flex-start; }
+      .floating-stack { right: 14px; bottom: 14px; }
+      .floating-tip { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#home" aria-label="Sifora Studio home">
+        <svg class="brand-mark" viewBox="0 0 100 100" fill="none" aria-hidden="true">
+          <circle cx="50" cy="50" r="48" fill="#222" stroke="#0f0f0f" stroke-width="3"></circle>
+          <circle cx="50" cy="50" r="41" fill="#f5edd8" opacity="0.08"></circle>
+          <ellipse cx="50" cy="50" rx="44" ry="15" transform="rotate(-15 50 50)" stroke="#c9a84c" stroke-width="3"></ellipse>
+          <text x="50" y="60" text-anchor="middle" font-size="38" font-weight="800" font-family="Georgia, serif" fill="#f5edd8">SS</text>
+        </svg>
+        <span class="brand-text">
+          <strong>SIFORA STUDIO</strong>
+          <span>Creative Design Agency</span>
+        </span>
+      </a>
+
+      <nav class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#about">About</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#contact">Contact</a>
+        <a class="btn" href="#contact">Hire Us</a>
+      </nav>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M4 7h16M4 12h16M4 17h16"></path>
+        </svg>
+      </button>
+    </div>
+    <div class="container mobile-menu" id="mobileMenu">
+      <div class="mobile-panel">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#about">About</a>
+        <a href="#testimonials">Reviews</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div class="reveal show">
+          <span class="eyebrow">Mostly AI-Based Services</span>
+          <h1 class="title">We Build <span class="gold">Brands</span><br>That Look Clear,<br>Modern & Creative</h1>
+          <p class="lead">
+            Sifora Studio is a Lahore-based creative design and digital growth agency helping brands stand out with graphics, UI/UX, web development, short-form edits, and smart AI-powered execution.
+          </p>
+
+          <div class="hero-tags chips">
+            <span>Graphics</span>
+            <span>UI/UX</span>
+            <span>Short-Form Edits</span>
+            <span>On-Page SEO</span>
+            <span>Web Development</span>
+            <span>Branding</span>
+          </div>
+
+          <div class="hero-actions">
+            <a class="btn" href="#portfolio">View Portfolio</a>
+            <a class="btn-ghost" href="#contact">Start a Project</a>
+          </div>
+
+          <div class="social-row">
+            <a href="https://instagram.com/sifora_studio" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://facebook.com/siforastudio" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://linkedin.com/company/sifora-studio" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat"><strong>50+</strong><span>Happy Clients</span></div>
+            <div class="stat"><strong>200+</strong><span>Projects Done</span></div>
+            <div class="stat"><strong>4.7★</strong><span>Google Rating</span></div>
+            <div class="stat"><strong>Global</strong><span>Services</span></div>
+          </div>
+        </div>
+
+        <div class="hero-visual reveal show">
+          <div class="orb">
+            <div class="ring"></div>
+            <div class="ring-2"></div>
+            <div class="ring-3"></div>
+            <div class="tilt-ring"></div>
+            <div class="core">
+              <svg viewBox="0 0 100 100" fill="none" aria-hidden="true">
+                <ellipse cx="50" cy="50" rx="42" ry="14" transform="rotate(-15 50 50)" stroke="#c9a84c" stroke-width="2.6"></ellipse>
+                <text x="50" y="60" text-anchor="middle" font-size="36" font-weight="800" font-family="Georgia, serif" fill="#f5edd8">SS</text>
+              </svg>
+            </div>
+            <div class="orbit a">🎨<small>Branding</small></div>
+            <div class="orbit b">💻<small>Web</small></div>
+            <div class="orbit c">📱<small>UI/UX</small></div>
+            <div class="orbit d">🎬<small>Edits</small></div>
+            <div class="orbit e">🚀<small>SEO</small></div>
+            <div class="orbit f">🤖<small>AI</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="container">
+        <span class="eyebrow reveal">What We Do</span>
+        <h2 class="title reveal">Premium <span class="gold">Services</span> for Modern Brands</h2>
+        <p class="lead reveal">Everything you need to launch, position, and grow your business online with clarity, creativity, and consistency.</p>
+
+        <div class="service-grid">
+          <article class="card service-card reveal">
+            <div class="icon-box">🎨</div>
+            <h3>Graphics & Branding</h3>
+            <p>Logo design, identity systems, brand kits, print-ready visuals, and premium presentation assets that make your brand unforgettable.</p>
+            <ul class="mini-list">
+              <li>Logo Design</li>
+              <li>Brand Identity</li>
+              <li>Print Materials</li>
+              <li>Visual Direction</li>
+            </ul>
+          </article>
+
+          <article class="card service-card reveal">
+            <div class="icon-box">📱</div>
+            <h3>UI/UX Design</h3>
+            <p>Clean interfaces and conversion-focused user journeys for apps, SaaS products, and modern digital experiences.</p>
+            <ul class="mini-list">
+              <li>Wireframes</li>
+              <li>App Screens</li>
+              <li>Landing UI</li>
+              <li>Interactive Flow</li>
+            </ul>
+          </article>
+
+          <article class="card service-card reveal">
+            <div class="icon-box">📣</div>
+            <h3>Social Media Design</h3>
+            <p>Scroll-stopping social media posts, story sets, campaign creatives, and platform-ready branded content.</p>
+            <ul class="mini-list">
+              <li>Carousel Posts</li>
+              <li>Story Creatives</li>
+              <li>Ad Graphics</li>
+              <li>Content Systems</li>
+            </ul>
+          </article>
+
+          <article class="card service-card reveal">
+            <div class="icon-box">🎬</div>
+            <h3>Short-Form Edits</h3>
+            <p>Reels, TikToks, and Shorts edited with hooks, captions, motion, and fast pacing built for engagement and retention.</p>
+            <ul class="mini-list">
+              <li>Reels Editing</li>
+              <li>Captions & Hooks</li>
+              <li>Motion Graphics</li>
+              <li>AI Assistance</li>
+            </ul>
+          </article>
+
+          <article class="card service-card reveal">
+            <div class="icon-box">🌐</div>
+            <h3>Web Development</h3>
+            <p>Responsive websites and modern landing pages that are visually polished, fast, and built to convert visitors.</p>
+            <ul class="mini-list">
+              <li>Business Sites</li>
+              <li>Portfolios</li>
+              <li>E-commerce UI</li>
+              <li>Responsive Layouts</li>
+            </ul>
+          </article>
+
+          <article class="card service-card reveal">
+            <div class="icon-box">🔍</div>
+            <h3>On-Page SEO</h3>
+            <p>Keyword-focused structure, optimized metadata, technical fixes, and strategic content improvements for better ranking.</p>
+            <ul class="mini-list">
+              <li>Meta Optimization</li>
+              <li>Keyword Structure</li>
+              <li>Content Clarity</li>
+              <li>Technical Basics</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="portfolio">
+      <div class="container">
+        <span class="eyebrow reveal">Our Work</span>
+        <h2 class="title reveal">Selected <span class="gold">Portfolio</span></h2>
+        <p class="lead reveal">A snapshot of the kind of visual systems, social campaigns, branded interfaces, and web experiences Sifora Studio creates.</p>
+
+        <div class="filter-row reveal">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="social">Social Media</button>
+          <button class="filter-btn" data-filter="uiux">UI/UX</button>
+          <button class="filter-btn" data-filter="branding">Branding</button>
+          <button class="filter-btn" data-filter="web">Web</button>
+        </div>
+
+        <div class="portfolio-grid" id="portfolioGrid">
+          <article class="card project-card reveal" data-category="social">
+            <div class="project-preview art-medical">
+              <div class="phone"></div>
+              <div class="poster-row">
+                <div class="poster art-medical"><div class="inner-shapes"></div></div>
+                <div class="poster art-medical"><div class="inner-shapes"></div></div>
+                <div class="poster art-medical"><div class="inner-shapes"></div></div>
+              </div>
+            </div>
+            <div class="portfolio-copy">
+              <div class="meta">Social Media · Healthcare</div>
+              <h3>Salam Medical Complex</h3>
+              <p>Appointment campaigns, awareness creatives, location-based content, and clean healthcare visuals designed for trust and action.</p>
+              <div class="chips"><span>Facebook Posts</span><span>Medical Branding</span><span>Campaign Design</span></div>
+            </div>
+          </article>
+
+          <article class="card project-card reveal" data-category="social">
+            <div class="project-preview art-pharma">
+              <div class="phone"></div>
+              <div class="poster-row">
+                <div class="poster art-pharma"><div class="inner-shapes"></div></div>
+                <div class="poster art-pharma"><div class="inner-shapes"></div></div>
+                <div class="poster art-pharma"><div class="inner-shapes"></div></div>
+              </div>
+            </div>
+            <div class="portfolio-copy">
+              <div class="meta">Social Media · Pharmacy</div>
+              <h3>Pharmed</h3>
+              <p>Delivery-focused pharmacy creatives, app-centered promotion, and bright, modern layouts for a scalable medical brand.</p>
+              <div class="chips"><span>Delivery Promotion</span><span>Pharma Design</span><span>Campaign Visuals</span></div>
+            </div>
+          </article>
+
+          <article class="card project-card reveal" data-category="branding">
+            <div class="project-preview art-surgi">
+              <div class="phone"></div>
+              <div class="poster-row">
+                <div class="poster art-surgi"><div class="inner-shapes"></div></div>
+                <div class="poster art-surgi"><div class="inner-shapes"></div></div>
+                <div class="poster art-surgi"><div class="inner-shapes"></div></div>
+              </div>
+            </div>
+            <div class="portfolio-copy">
+              <div class="meta">Branding · Medical Equipment</div>
+              <h3>Surgi Doc</h3>
+              <p>Premium dark-themed identity direction for surgical instruments, blending professionalism, trust, and product prestige.</p>
+              <div class="chips"><span>Identity System</span><span>Premium Visuals</span><span>Corporate Style</span></div>
+            </div>
+          </article>
+
+          <article class="card project-card reveal" data-category="uiux">
+            <div class="project-preview art-ui">
+              <div class="phone"></div>
+              <div class="poster-row">
+                <div class="poster art-ui"><div class="inner-shapes"></div></div>
+                <div class="poster art-ui"><div class="inner-shapes"></div></div>
+                <div class="poster art-ui"><div class="inner-shapes"></div></div>
+              </div>
+            </div>
+            <div class="portfolio-copy">
+              <div class="meta">UI/UX · Mobile App</div>
+              <h3>FinApp Dashboard</h3>
+              <p>Elegant app interface direction with dark surfaces, gold accents, focused hierarchy, and polished product feel.</p>
+              <div class="chips"><span>App UI</span><span>Dark Mode</span><span>Product Design</span></div>
+            </div>
+          </article>
+
+          <article class="card project-card reveal" data-category="branding">
+            <div class="project-preview art-brand">
+              <div class="phone"></div>
+              <div class="poster-row">
+                <div class="poster art-brand"><div class="inner-shapes"></div></div>
+                <div class="poster art-brand"><div class="inner-shapes"></div></div>
+                <div class="poster art-brand"><div class="inner-shapes"></div></div>
+              </div>
+            </div>
+            <div class="portfolio-copy">
+              <div class="meta">Branding · Luxury Identity</div>
+              <h3>LuxBrand Identity</h3>
+              <p>High-end visual branding concepts with premium textures, restrained typography, and elegant brand application logic.</p>
+              <div class="chips"><span>Logo Design</span><span>Business Identity</span><span>Luxury Feel</span></div>
+            </div>
+          </article>
+
+          <article class="card project-card reveal" data-category="web">
+            <div class="project-preview art-web">
+              <div class="phone"></div>
+              <div class="poster-row">
+                <div class="poster art-web"><div class="inner-shapes"></div></div>
+                <div class="poster art-web"><div class="inner-shapes"></div></div>
+                <div class="poster art-web"><div class="inner-shapes"></div></div>
+              </div>
+            </div>
+            <div class="portfolio-copy">
+              <div class="meta">Web · Conversion Focused</div>
+              <h3>E-Commerce Experience</h3>
+              <p>Responsive and fast storefront layouts designed to present products clearly and guide customers toward action.</p>
+              <div class="chips"><span>Responsive</span><span>Fast UI</span><span>Conversion First</span></div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about">
+      <div class="container">
+        <span class="eyebrow reveal">About Sifora</span>
+        <h2 class="title reveal">Creative Design + <span class="gold">Digital Growth</span> Solutions</h2>
+        <p class="lead reveal">We don’t just make visuals look good. We build design systems and digital assets that help brands communicate clearly, feel premium, and perform better online.</p>
+
+        <div class="about-layout">
+          <div class="card about-copy reveal">
+            <p>
+              Sifora Studio is a <strong style="color:var(--gold)">Lahore-based</strong> marketing and creative agency working with brands locally and worldwide. Our studio blends taste, strategy, and AI-assisted speed to deliver high-value digital work without the usual clutter.
+            </p>
+            <p>
+              From healthcare and pharma to product businesses and personal brands, we create the visual language businesses need to grow with confidence.
+            </p>
+            <div class="facts">
+              <div class="fact"><small>Founded</small><strong>2020</strong></div>
+              <div class="fact"><small>Location</small><strong>Lahore, PK</strong></div>
+              <div class="fact"><small>Core Services</small><strong>6+</strong></div>
+              <div class="fact"><small>Client Rating</small><strong>4.7 ★</strong></div>
+            </div>
+          </div>
+
+          <div class="value-grid">
+            <article class="card value reveal">
+              <div class="vicon">🚀</div>
+              <h3>Results-Driven</h3>
+              <p>Every design decision supports visibility, trust, conversion, or business growth.</p>
+            </article>
+            <article class="card value reveal">
+              <div class="vicon">🤖</div>
+              <h3>AI-Powered</h3>
+              <p>We use modern AI workflows to move faster, sharpen ideas, and deliver better creative output.</p>
+            </article>
+            <article class="card value reveal">
+              <div class="vicon">💎</div>
+              <h3>Premium Quality</h3>
+              <p>Clean typography, thoughtful structure, polished visuals, and brand consistency in every asset.</p>
+            </article>
+            <article class="card value reveal">
+              <div class="vicon">🌍</div>
+              <h3>Worldwide Service</h3>
+              <p>We collaborate remotely with clients across different industries, markets, and time zones.</p>
+            </article>
+          </div>
+        </div>
+
+        <div class="tool-row reveal">
+          <span>Figma</span>
+          <span>Adobe Illustrator</span>
+          <span>Photoshop</span>
+          <span>Premiere Pro</span>
+          <span>After Effects</span>
+          <span>React</span>
+          <span>AI Workflows</span>
+          <span>Canva Pro</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="testimonials">
+      <div class="container">
+        <span class="eyebrow reveal">Client Love</span>
+        <h2 class="title reveal">What Clients <span class="gold">Say</span></h2>
+        <p class="lead reveal">Real feedback from brands that trusted Sifora Studio with their digital presence and creative growth.</p>
+
+        <div class="testimonial-grid">
+          <article class="card testimonial reveal">
+            <div class="stars">★★★★★</div>
+            <p>“Sifora Studio transformed our healthcare content into a clean, credible, high-performing social presence. Their work helped us get more inquiries and stronger trust.”</p>
+            <div class="person">
+              <div class="avatar">👨‍⚕️</div>
+              <div><strong>Dr. Ali Hameed</strong><span>Salam Medical Complex</span></div>
+            </div>
+          </article>
+
+          <article class="card testimonial reveal">
+            <div class="stars">★★★★★</div>
+            <p>“The designs were sharp, modern, and easy to scale. Sifora gave our pharmacy campaigns a much more professional and premium feel.”</p>
+            <div class="person">
+              <div class="avatar">💊</div>
+              <div><strong>Pharmed Team</strong><span>Online Pharmacy Network</span></div>
+            </div>
+          </article>
+
+          <article class="card testimonial reveal">
+            <div class="stars">★★★★★</div>
+            <p>“Their branding direction felt high-end from day one. The visuals matched our product quality and gave us a stronger identity in the market.”</p>
+            <div class="person">
+              <div class="avatar">🔬</div>
+              <div><strong>Surgi Doc</strong><span>Surgical Instruments Brand</span></div>
+            </div>
+          </article>
+        </div>
+
+        <div class="rating-band reveal">
+          <div class="item"><strong>4.7</strong><span class="soft">Google Rating</span></div>
+          <div class="item"><strong>50+</strong><span class="soft">Happy Clients</span></div>
+          <div class="item"><strong>200+</strong><span class="soft">Projects Delivered</span></div>
+          <div class="item"><strong>🌍</strong><span class="soft">Worldwide Service</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <div class="container">
+        <span class="eyebrow reveal">Let’s Connect</span>
+        <h2 class="title reveal">Start Your <span class="gold">Project</span></h2>
+        <p class="lead reveal">Need branding, content, web design, or AI-assisted creative execution? Reach out and let’s build something that actually moves your business forward.</p>
+
+        <div class="contact-grid">
+          <div class="card contact-panel reveal">
+            <h3>Contact Details</h3>
+            <p>Available for clients in Pakistan and worldwide. Fast replies, clear process, and creative work that stays aligned with your brand.</p>
+
+            <div class="contact-list">
+              <a class="contact-item" href="tel:+923470726343">
+                <div class="contact-icon">☎</div>
+                <div class="contact-meta"><small>Phone</small><p>+92 347 0726343</p></div>
+              </a>
+              <a class="contact-item" href="mailto:siforastudio@gmail.com">
+                <div class="contact-icon">✉</div>
+                <div class="contact-meta"><small>Email</small><p>siforastudio@gmail.com</p></div>
+              </a>
+              <div class="contact-item">
+                <div class="contact-icon">⌂</div>
+                <div class="contact-meta"><small>Location</small><p>Lahore, Punjab, Pakistan</p></div>
+              </div>
+            </div>
+
+            <div class="social-row">
+              <a href="https://instagram.com/sifora_studio" target="_blank" rel="noopener" aria-label="Instagram">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+              </a>
+              <a href="https://facebook.com/siforastudio" target="_blank" rel="noopener" aria-label="Facebook">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+              </a>
+              <a href="https://linkedin.com/company/sifora-studio" target="_blank" rel="noopener" aria-label="LinkedIn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+              </a>
+            </div>
+
+            <a class="wa-block" href="https://wa.me/923470726343?text=Hi%2C%20I%20want%20to%20discuss%20a%20project%20with%20Sifora%20Studio" target="_blank" rel="noopener">
+              <div>
+                <strong>Chat on WhatsApp</strong>
+                <span>Quickest way to reach Sifora Studio</span>
+              </div>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" style="color:#8ef3b3"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+            </a>
+          </div>
+
+          <div class="card contact-panel reveal">
+            <h3>Send a Message</h3>
+            <div class="success" id="successMessage">Opening your email app with your message details…</div>
+            <form class="contact-form" id="contactForm">
+              <div class="form-grid">
+                <div class="field">
+                  <label for="name">Your Name</label>
+                  <input id="name" name="name" type="text" placeholder="John Doe" required>
+                </div>
+                <div class="field">
+                  <label for="email">Email Address</label>
+                  <input id="email" name="email" type="email" placeholder="john@example.com" required>
+                </div>
+              </div>
+              <div class="field">
+                <label for="service">Service Needed</label>
+                <select id="service" name="service">
+                  <option value="">Select a service…</option>
+                  <option>Graphics & Branding</option>
+                  <option>UI/UX Design</option>
+                  <option>Social Media Design</option>
+                  <option>Short-Form Video Edits</option>
+                  <option>Web Development</option>
+                  <option>On-Page SEO</option>
+                  <option>Full Brand Package</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="message">Project Details</label>
+                <textarea id="message" name="message" placeholder="Tell us about your project, goals, timeline, and what kind of support you need…" required></textarea>
+              </div>
+              <button class="btn" type="submit">Send Message</button>
+              <div class="form-note">We typically respond within 24 hours.</div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="card footer-brand">
+          <h3>Sifora Studio</h3>
+          <p>Creative Design + Digital Growth Solutions for brands that want to look premium, communicate clearly, and grow online.</p>
+          <div class="footer-social social-row">
+            <a href="https://instagram.com/sifora_studio" target="_blank" rel="noopener" aria-label="Instagram">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            </a>
+            <a href="https://facebook.com/siforastudio" target="_blank" rel="noopener" aria-label="Facebook">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </a>
+            <a href="https://linkedin.com/company/sifora-studio" target="_blank" rel="noopener" aria-label="LinkedIn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="card footer-col">
+          <h4>Quick Links</h4>
+          <div class="footer-links">
+            <a href="#home">Home</a>
+            <a href="#services">Services</a>
+            <a href="#portfolio">Portfolio</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+          </div>
+        </div>
+
+        <div class="card footer-col">
+          <h4>Services</h4>
+          <div class="footer-links">
+            <a href="#services">Graphics & Branding</a>
+            <a href="#services">UI/UX Design</a>
+            <a href="#services">Social Media Design</a>
+            <a href="#services">Video Editing</a>
+            <a href="#services">Web Development</a>
+            <a href="#services">On-Page SEO</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div class="foot-note">© <span id="year"></span> Sifora Studio. All rights reserved. Lahore, Pakistan.</div>
+        <div class="badge-ai">Mostly AI-Powered Services</div>
+        <a class="foot-note" href="mailto:siforastudio@gmail.com">siforastudio@gmail.com</a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="floating-stack">
+    <a class="floating-link" href="#home" aria-label="Back to top">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+    </a>
+    <span></span>
+    <a class="wa-float" href="https://wa.me/923470726343?text=Hi%2C%20I%20want%20to%20discuss%20a%20project%20with%20Sifora%20Studio" target="_blank" rel="noopener" aria-label="WhatsApp">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    </a>
+    <span></span>
+  </div>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const navAnchors = document.querySelectorAll('a[href^="#"]');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const projectCards = document.querySelectorAll('.project-card');
+    const form = document.getElementById('contactForm');
+    const success = document.getElementById('successMessage');
+    const reveals = document.querySelectorAll('.reveal');
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    menuToggle?.addEventListener('click', () => {
+      mobileMenu.classList.toggle('open');
+    });
+
+    navAnchors.forEach((anchor) => {
+      anchor.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+      });
+    });
+
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        filterButtons.forEach((b) => b.classList.remove('active'));
+        button.classList.add('active');
+        const filter = button.dataset.filter;
+
+        projectCards.forEach((card) => {
+          const match = filter === 'all' || card.dataset.category === filter;
+          card.classList.toggle('hidden', !match);
+        });
+      });
+    });
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const data = new FormData(form);
+      const name = data.get('name') || '';
+      const email = data.get('email') || '';
+      const service = data.get('service') || 'General Inquiry';
+      const message = data.get('message') || '';
+      const subject = encodeURIComponent(`Project Inquiry from ${name} - ${service}`);
+      const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nService: ${service}\n\nMessage:\n${message}`);
+      success.classList.add('show');
+      window.location.href = `mailto:siforastudio@gmail.com?subject=${subject}&body=${body}`;
+      setTimeout(() => success.classList.remove('show'), 3000);
+      form.reset();
+    });
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) entry.target.classList.add('show');
+      });
+    }, { threshold: 0.12 });
+
+    reveals.forEach((item) => observer.observe(item));
+  </script>
+</body>
+</html>
